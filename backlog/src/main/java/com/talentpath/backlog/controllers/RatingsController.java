@@ -1,5 +1,7 @@
 package com.talentpath.backlog.controllers;
 
+import com.talentpath.backlog.exceptions.DoesNotExistException;
+import com.talentpath.backlog.exceptions.NullArgException;
 import com.talentpath.backlog.models.Rating;
 import com.talentpath.backlog.services.RatingsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +15,7 @@ public class RatingsController {
     RatingsService service;
 
     @GetMapping("/{gameId}")
-    public Rating getRatingByGameId(@PathVariable Integer gameId) {
+    public Rating getRatingByGameId(@PathVariable Integer gameId) throws DoesNotExistException, NullArgException {
         return service.getByGameId(gameId);
     }
 

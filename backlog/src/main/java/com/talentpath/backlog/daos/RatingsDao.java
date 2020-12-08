@@ -1,5 +1,6 @@
 package com.talentpath.backlog.daos;
 
+import com.talentpath.backlog.exceptions.NullArgException;
 import com.talentpath.backlog.models.Rating;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
@@ -18,11 +19,17 @@ public class RatingsDao {
     @Autowired
     private JdbcTemplate template;
 
-    public Rating getByGameId(Integer gameId) {
+    public Rating getByGameId(Integer gameId) throws NullArgException {
+        if (gameId == null) {
+            throw new NullArgException("gameId is null");
+        }
         String sql = "select * from \"Ratings\" " +
                 "where \"gameId\" = "+ gameId + ";";
 
         List<Rating> gameRatings = template.query(sql, new RatingMapper());
+        if (gameRatings.size() == 0) {
+            return null;
+        }
         Rating gameRating = gameRatings.get(0);
         return gameRating;
     }
